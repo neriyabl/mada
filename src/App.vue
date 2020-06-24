@@ -6,24 +6,20 @@
       </div>
     </v-app-bar>
 
-    <v-main>
-      <HelloWorld />
+    <v-main class="ma-7">
+      <patients />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import Patients from "./views/Patients";
 
 export default {
   name: "App",
 
   components: {
-    HelloWorld
-  },
-
-  data: () => ({
-    //
-  })
+    Patients
+  }
 };
 </script>

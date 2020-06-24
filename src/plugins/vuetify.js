@@ -9,6 +9,7 @@ export default new Vuetify({
   theme: {
     themes: {
       light: {
+        primary: colors.indigo.darken2,
         accent: colors.lightBlue.lighten5
       }
     }
