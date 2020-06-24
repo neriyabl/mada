@@ -6,7 +6,27 @@
     show-select
     item-key="id"
     @input="$emit('input', $event)"
-  />
+  >
+    <template v-slot:item.turnDate="{ item }">
+      <span
+        v-text="
+          item.turnDate
+            ? item.turnDate.toLocaleDateString(undefined, {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })
+            : ''
+        "
+      />
+    </template>
+    <template v-slot:item.status="{ item }">
+      <v-chip :color="statusColor(item)" outlined small>
+        {{ item.status }}
+      </v-chip>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
@@ -31,12 +51,29 @@ export default {
       },
       { text: "שם פרטי", value: "firstName" },
       { text: "שם משפחה", value: "lastName" },
-      { text: "טלפון", value: "phoneNumber" },
-      { text: "נייד", value: "cellphoneNumber" },
+      { text: "טלפון", value: "phoneNumber", sortable: false },
+      { text: "נייד", value: "cellphoneNumber", sortable: false },
       { text: "יישוב", value: "city" },
       { text: "רחוב", value: "street" },
-      { text: "מספר בית", value: "houseNumber" }
+      { text: "מספר בית", value: "houseNumber" },
+      { text: "תור בתאריך", value: "turnDate" },
+      { text: "סטאטוס", value: "status" }
     ]
-  })
+  }),
+  methods: {
+    statusColor({ status }) {
+      switch (status) {
+        case "חדש": {
+          return "info";
+        }
+        case "בהמתנה לשיחה": {
+          return "success";
+        }
+        case "נקבע תור": {
+          return "warning";
+        }
+      }
+    }
+  }
 };
 </script>

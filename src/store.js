@@ -15,9 +15,11 @@ export default new Vuex.Store({
           lastName: "כהן",
           phoneNumber: "05456233",
           cellphoneNumber: "0545676382",
-          city: "מכמש",
+          city: "מצפה יריחו",
           street: "תרשיש",
-          houseNumber: "5\r"
+          houseNumber: "5",
+          status: "נקבע תור",
+          turnDate: new Date()
         },
         {
           id: "3",
@@ -25,9 +27,10 @@ export default new Vuex.Store({
           lastName: "כהן",
           phoneNumber: "05456233",
           cellphoneNumber: "0545674582",
-          city: "מכמש",
+          city: "מצפה יריחו",
           street: "תרשיש",
-          houseNumber: "6\r"
+          houseNumber: "6",
+          status: "חדש"
         },
         {
           id: "5",
@@ -37,7 +40,8 @@ export default new Vuex.Store({
           cellphoneNumber: "",
           city: "ירושלים",
           street: "המרפא",
-          houseNumber: "6\r"
+          houseNumber: "6",
+          status: "בהמתנה לשיחה"
         }
       ];
     }
