@@ -10,7 +10,7 @@
             @change="handleFileUpload()"
             v-model="file"
             label="העלאת קובץ csv"
-            accept=".csv"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.csv,application/vnd.ms-excel"
             hide-details
           />
         </v-col>
@@ -51,6 +51,8 @@
 
 <script>
 import PatientsTable from "./PatientsTable";
+import { readFile } from "../utils/fileParser";
+
 export default {
   name: "ImportPatients",
   components: { PatientsTable },
@@ -60,39 +62,29 @@ export default {
     selectedPatients: []
   }),
   methods: {
-    handleFileUpload() {
+    async handleFileUpload() {
       if (!this.file) {
         this.fileData = [];
         return;
       }
-      // const file = this.$refs.file.files[0];
-      if (!this.file.name.endsWith(".csv")) {
+
+      const data = await readFile(this.file);
+
+      if (!this.validateFileData(data)) {
+        alert("הקובץ לא תקין");
         return;
       }
-      const reader = new FileReader();
-      reader.addEventListener("loadend", ({ target: { result } }) => {
-        if (!this.validateFileData(result)) {
-          alert("הקובץ לא תקין");
-          return;
-        }
-        this.fileData = result
-          .split("\n")
-          .filter(f => Boolean(f) && f !== "\n")
-          .map(row => {
-            const props = row.split(",");
-            return {
-              id: props[0],
-              firstName: props[1],
-              lastName: props[2],
-              phoneNumber: props[3],
-              cellphoneNumber: props[4],
-              city: props[5],
-              street: props[6],
-              houseNumber: props[7]
-            };
-          });
-      });
-      reader.readAsText(this.file);
+
+      this.fileData = data.map(row => ({
+        id: row[0],
+        firstName: row[1],
+        lastName: row[2],
+        phoneNumber: row[3],
+        cellphoneNumber: row[4],
+        city: row[5],
+        street: row[6],
+        houseNumber: row[7]
+      }));
     },
     validateFileData(data) {
       //todo validate file data
