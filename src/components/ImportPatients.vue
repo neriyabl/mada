@@ -1,57 +1,63 @@
 <template>
-  <v-card class="ma-7" elevation="4">
+  <v-card elevation="4">
     <v-card-title class="py-0 accent">
       <v-row>
-        <v-col cols="4" lg="2" class="pa-1">
+        <v-col cols="6">
           <v-file-input
+            outlined
+            rounded
+            dense
             @change="handleFileUpload()"
             v-model="file"
             label="העלאת קובץ csv"
             accept=".csv"
+            hide-details
           />
+        </v-col>
+        <v-col cols="6" class="text-end">
+          <v-btn
+            class="ml-2"
+            color="primary"
+            outlined
+            rounded
+            :disabled="!selectedPatients.length"
+          >
+            <v-icon left>mdi-cloud-upload</v-icon>
+            הוסף את המטופלים המסומנים
+          </v-btn>
+          <v-btn
+            class="mr-2"
+            color="error"
+            rounded
+            text
+            @click="$emit('close')"
+          >
+            <v-icon class="pl-1">mdi-close</v-icon>
+            סגור
+          </v-btn>
         </v-col>
       </v-row>
     </v-card-title>
     <v-divider v-if="fileData.length" />
-    <v-card-text v-if="fileData.length">
-      <v-row>
-        <v-col cols="12">
-          <v-data-table
-            v-model="selectedPatients"
-            :headers="headers"
-            :items="fileData"
-            show-select
-            item-key="id"
-          />
-        </v-col>
-      </v-row>
+    <v-card-text v-if="fileData.length" class="pa-0">
+      <PatientsTable
+        v-model="selectedPatients"
+        :patients="fileData"
+        hide-footer
+      />
     </v-card-text>
   </v-card>
 </template>
 
 <script>
+import PatientsTable from "./PatientsTable";
 export default {
-  name: "HelloWorld",
-
+  name: "ImportPatients",
+  components: { PatientsTable },
   data: () => ({
     file: null,
     fileData: [],
-    selectedPatients: [],
-    headers: [
-      {
-        text: "תעודת זהות",
-        align: "start",
-        sortable: false,
-        value: "id"
-      },
-      { text: "שם פרטי", value: "firstName" },
-      { text: "שם משפחה", value: "lastName" },
-      { text: "טלפון", value: "phoneNumber" },
-      { text: "נייד", value: "cellphoneNumber" },
-      { text: "יישוב", value: "city" },
-      { text: "רחוב", value: "street" },
-      { text: "מספר בית", value: "houseNumber" }
-    ]
+    selectedPatients: []
   }),
   methods: {
     handleFileUpload() {

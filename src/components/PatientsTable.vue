@@ -3,6 +3,8 @@
     :value="value"
     :headers="headers"
     :items="patients"
+    :search="search"
+    :hide-default-footer="hideFooter"
     show-select
     item-key="id"
     @input="$emit('input', $event)"
@@ -22,7 +24,7 @@
       />
     </template>
     <template v-slot:item.status="{ item }">
-      <v-chip :color="statusColor(item)" outlined small>
+      <v-chip v-if="item.status" :color="statusColor(item)" outlined small>
         {{ item.status }}
       </v-chip>
     </template>
@@ -39,7 +41,9 @@ export default {
     },
     value: {
       type: Array
-    }
+    },
+    search: String,
+    hideFooter: Boolean
   },
   data: () => ({
     headers: [
